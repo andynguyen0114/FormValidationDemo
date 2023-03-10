@@ -6,32 +6,46 @@ const confirmPasswordE1 = document.querySelector("#confirm-password");
 
 const form = document.querySelector("#signup");
 
-
+/** 
+ * If the submit button is clicked, but there are errors,
+ * then the validations for incorrect inputs will trigger 
+ */
 form.addEventListener('submit',function(e){
     e.preventDefault();
 });
 
+/**
+ * Reusable utility functions 
+ * - isRequired: checks for empty inputs 
+ * - isBetween: checks if input is between a set length 
+ * - isEmailValid: checks if email format is valid 
+ * - isPasswordSecurd: checks if password is valid 
+ */
 
-// check if the input argument is empty
+// check if the input is empty or not  
 const isRequired = value => value === '' ? false: true;
 
-// returns false if the length argument is not between the 
-// min and max argument 
+// check the length of the input 
 const isBetween = (length,min,max) => length < min || length > max ? false : true;
 
-// check if email is valid by regular expression 
+// check if email is valid using regex 
 const isEmailValid = (email) => {
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
 }
 
-// check if a password is strong by regular expression 
+// check if a password is strong enough using regex 
 const isPasswordSecure = (password) => {
     const re = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
     return re.test(password);
 }
 
 
+/**
+ * Function to display error messages for incorrect inputs
+ * @param {String} input - if textbox inputs are empty or invalid 
+ * @param {*} message - red error message beneath textboxes for incorrect inputs
+ */
 const showError = (input, message) => {
     // get the parent element of the input field,
     // which is the <div> element that contains the form-field class 
@@ -43,11 +57,15 @@ const showError = (input, message) => {
 
     // select the <small> element inside the form-field element 
     const error = formField.querySelector('small');
+
     // set the error message to its textContent property of the <small> element 
     error.textContent = message;
 }
 
-
+/**
+ * Function to display for correct inputs 
+ * @param {String} input - if input into textboxes are correct, then textbox will turn green 
+ */
 const showSuccess = (input) => {
     // get the form-field element 
     const formField = input.parentElement;
@@ -61,7 +79,12 @@ const showSuccess = (input) => {
     error.textContent = '';
 }
 
-
+/**
+ * Function to check that username textbox: 
+ * - is not empty,
+ * - and has the correct amount of characters 
+ * @returns - true if username is filled with the correct character length 
+ */
 const checkUsername = () => {
     let valid = false;
     const min = 3, max = 25;
@@ -81,9 +104,15 @@ const checkUsername = () => {
     return valid;
 }
 
-
+/**
+ * Function to check email textbox: 
+ * - is not empty, 
+ * - is a valid email
+ * @returns - true if email is filled in the correct format 
+ */
 const checkEmail = () => {
     let valid = false;
+    // remove the whitespaces of email input without modifying the original string 
     const email = emailE1.value.trim();
 
     // check that email input is not empty and that it is valid 
@@ -99,15 +128,21 @@ const checkEmail = () => {
     return valid;
 }
 
-
+/**
+ * Function to check password textbox: 
+ * - is not empty, 
+ * - is a valid password 
+ * @returns - true if password is filled in the correct format 
+ */
 const checkPassword = () => {
     let valid = false;
+    // remove the whitespaces of password input without modifying the original string 
     const password = passwordE1.value.trim();
 
     if(!isRequired(password)){
         showError(passwordE1,'Password cannot be blank');
     }else if(!isPasswordSecure(password)){
-        showError(passwordE1,'Password must containt at least 8 characters that include at 1 lowercase character, 1 uppercase character, 1 number, and 1 special character.');
+        showError(passwordE1,'Password must contain at least 8 characters that include at 1 lowercase character, 1 uppercase character, 1 number, and 1 special character.');
     }else{
         showSuccess(passwordE1);
         valid = true;
@@ -117,10 +152,15 @@ const checkPassword = () => {
 
 }
 
-
+/**
+ * Function to confirm password textbox:
+ * - is not empty 
+ * - is the same input as password 
+ * @returns - true if confirm password is the same as password 
+ */
 const checkConfirmPassword = () => {
     let valid = false; 
-    // check confirm password 
+    // remove whitespaces for confirm password and password textbox  
     const confirmPassword = confirmPasswordE1.value.trim();
     const password = passwordE1.value.trim();
 
@@ -136,7 +176,9 @@ const checkConfirmPassword = () => {
     return valid;
 }
 
-
+/**
+ * Check if all inputs into form are valid 
+ */
 form.addEventListener('submit', function(e) {
     // prevent the form from submitting 
     e.preventDefault();
@@ -156,11 +198,15 @@ form.addEventListener('submit', function(e) {
 
     // submit to the server if the form is valid 
     if(isFormValid){
-        
+        // do something 
     }
 });
 
-
+/**
+ * Instant feedback feature
+ * When the submit button is clicked, instant feedback will be provided for 
+ * each input 
+ */
 form.addEventListener('input', debounce(function(e){
     switch(e.target.id){
         case 'username':
@@ -178,7 +224,17 @@ form.addEventListener('input', debounce(function(e){
     }
 }));
 
- 
+/**
+ * Debouncing is a programming pattern to restrict the calling of a time-consuming
+ * function frequently, by delaying the execution of the function until a specified 
+ * time to avoid unncessary CPU cycles, and API calls 
+ * 
+ * Performance improvement using debouncing technique 
+ * @param {Function} fn - the function to execute after the debounce time  
+ * @param {Const} delay - the amount of time to wait after the last received action 
+ * before executing function 
+ * @returns - a function that, as long as it continues to be invoked, will not be triggered. The function will be called after it stops being called for 500 milliseconds
+ */
 const debounce = (fn, delay = 500) => {
     let timeoutId;
     return(...args) => {
@@ -186,7 +242,7 @@ const debounce = (fn, delay = 500) => {
             clearTimeout(timeoutId);
         }
 
-        // setup a new timer 
+        // the value used to indicate a running debounce 
         timeoutId = setTimeout(() => {
             fn.apply(null,args)
         }, delay);
