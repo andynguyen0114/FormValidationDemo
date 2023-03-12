@@ -1,4 +1,4 @@
-// input variables to validate 
+// input variables to validate on form
 const usernameE1 = document.querySelector('#username');
 const emailE1 = document.querySelector('#email');
 const passwordE1 = document.querySelector("#password");
@@ -176,6 +176,8 @@ const checkConfirmPassword = () => {
     return valid;
 }
 
+
+
 /**
  * Check if all inputs into form are valid 
  */
@@ -183,23 +185,20 @@ form.addEventListener('submit', function(e) {
     // prevent the form from submitting 
     e.preventDefault();
 
-    // validate forms 
-    // call eat individual function to validate username, email, password, and 
-    // confirm password fields 
-    let isUsernameValid = checkUsername(),
-        isEmailValid = checkEmail(),
-        isPasswordValid = checkPassword(),
-        isConfirmPasswordValid = checkConfirmPassword();
+    // // validate forms 
+    // // call eat individual function to validate username, email, password, and 
+    // // confirm password fields 
+    // let isUsernameValid = checkUsername(),
+    //     isEmailValid = checkEmail(),
+    //     isPasswordValid = checkPassword(),
+    //     isConfirmPasswordValid = checkConfirmPassword();
 
-    let isFormValid = isUsernameValid &&
-        isEmailValid &&
-        isPasswordValid &&
-        isConfirmPasswordValid;
+    // let isFormValid = isUsernameValid &&
+    //     isEmailValid &&
+    //     isPasswordValid &&
+    //     isConfirmPasswordValid;
 
-    // submit to the server if the form is valid 
-    if(isFormValid){
-        // do something 
-    }
+    checkInputs();
 });
 
 /**
@@ -247,5 +246,16 @@ const debounce = (fn, delay = 500) => {
             fn.apply(null,args)
         }, delay);
     };
-    
 };
+
+function checkInputs(){
+    let isUsernameValid = checkUsername(),
+        isEmailValid = checkEmail(),
+        isPasswordValid = checkPassword(),
+        isConfirmPasswordValid = checkConfirmPassword();
+
+    let isFormValid = isUsernameValid &&
+        isEmailValid &&
+        isPasswordValid &&
+        isConfirmPasswordValid;
+}
