@@ -2,17 +2,9 @@
 const usernameE1 = document.querySelector('#username');
 const emailE1 = document.querySelector('#email');
 const passwordE1 = document.querySelector("#password");
-const confirmPasswordE1 = document.querySelector("#confirm-password");
+const confirmPasswordE1 = document.querySelector("#confirmPassword");
 
 const form = document.querySelector("#signup");
-
-/** 
- * If the submit button is clicked, but there are errors,
- * then the validations for incorrect inputs will trigger 
- */
-form.addEventListener('submit',function(e){
-    e.preventDefault();
-});
 
 /**
  * Reusable utility functions 
@@ -161,12 +153,12 @@ const checkPassword = () => {
 const checkConfirmPassword = () => {
     let valid = false; 
     // remove whitespaces for confirm password and password textbox  
-    const confirmPassword = confirmPasswordE1.value.trim();
+    const confirm = confirmPasswordE1.value.trim();
     const password = passwordE1.value.trim();
 
-    if(!isRequired(confirmPassword)){
+    if(!isRequired(confirm)){
         showError(confirmPasswordE1,'Please enter the password again');
-    }else if(password !== confirmPassword){
+    }else if(password != confirm){
         showError(confirmPasswordE1,'Confirm password does not match');
     }else{
         showSuccess(confirmPasswordE1);
@@ -176,8 +168,6 @@ const checkConfirmPassword = () => {
     return valid;
 }
 
-
-
 /**
  * Check if all inputs into form are valid 
  */
@@ -185,70 +175,9 @@ form.addEventListener('submit', function(e) {
     // prevent the form from submitting 
     e.preventDefault();
 
-    // // validate forms 
-    // // call eat individual function to validate username, email, password, and 
-    // // confirm password fields 
-    // let isUsernameValid = checkUsername(),
-    //     isEmailValid = checkEmail(),
-    //     isPasswordValid = checkPassword(),
-    //     isConfirmPasswordValid = checkConfirmPassword();
-
-    // let isFormValid = isUsernameValid &&
-    //     isEmailValid &&
-    //     isPasswordValid &&
-    //     isConfirmPasswordValid;
-
-    checkInputs();
-});
-
-/**
- * Instant feedback feature
- * When the submit button is clicked, instant feedback will be provided for 
- * each input 
- */
-form.addEventListener('input', debounce(function(e){
-    switch(e.target.id){
-        case 'username':
-            checkUsername();
-            break;
-        case 'email':
-            checkEmail();
-            break;
-        case 'password':
-            checkPassword();
-            break;
-        case 'confirm-password':
-            checkConfirmPassword();
-            break;
-    }
-}));
-
-/**
- * Debouncing is a programming pattern to restrict the calling of a time-consuming
- * function frequently, by delaying the execution of the function until a specified 
- * time to avoid unncessary CPU cycles, and API calls 
- * 
- * Performance improvement using debouncing technique 
- * @param {Function} fn - the function to execute after the debounce time  
- * @param {Const} delay - the amount of time to wait after the last received action 
- * before executing function 
- * @returns - a function that, as long as it continues to be invoked, will not be triggered. The function will be called after it stops being called for 500 milliseconds
- */
-const debounce = (fn, delay = 500) => {
-    let timeoutId;
-    return(...args) => {
-        if(timeoutId){
-            clearTimeout(timeoutId);
-        }
-
-        // the value used to indicate a running debounce 
-        timeoutId = setTimeout(() => {
-            fn.apply(null,args)
-        }, delay);
-    };
-};
-
-function checkInputs(){
+    // validate forms 
+    // call eat individual function to validate username, email, password, and 
+    // confirm password fields 
     let isUsernameValid = checkUsername(),
         isEmailValid = checkEmail(),
         isPasswordValid = checkPassword(),
@@ -258,4 +187,8 @@ function checkInputs(){
         isEmailValid &&
         isPasswordValid &&
         isConfirmPasswordValid;
-}
+
+    if(isFormValid){
+        console.log("Form has been submitted.");
+    }
+});
