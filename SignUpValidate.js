@@ -176,7 +176,7 @@ form.addEventListener('submit', function(e) {
     e.preventDefault();
 
     // validate forms 
-    // call eat individual function to validate username, email, password, and 
+    // call each individual function to validate username, email, password, and 
     // confirm password fields 
     let isUsernameValid = checkUsername(),
         isEmailValid = checkEmail(),
