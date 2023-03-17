@@ -6,6 +6,40 @@ const confirmPasswordE1 = document.querySelector("#confirmPassword");
 
 const form = document.querySelector("#signup");
 
+
+/**
+ * Check if all inputs into form are valid 
+ */
+form.addEventListener('submit', function(e) {
+    // prevent the form from submitting 
+    e.preventDefault();
+
+    // validate forms 
+    // call each individual function to validate username, email, password, and 
+    // confirm password fields 
+    let isUsernameValid = checkUsername(),
+        isEmailValid = checkEmail(),
+        isPasswordValid = checkPassword(),
+        isConfirmPasswordValid = checkConfirmPassword();
+
+    let isFormValid = isUsernameValid &&
+        isEmailValid &&
+        isPasswordValid &&
+        isConfirmPasswordValid;
+
+    if(isFormValid){
+        removeSuccess(usernameE1);
+        removeSuccess(emailE1);
+        removeSuccess(passwordE1);
+        removeSuccess(confirmPasswordE1);
+
+        console.log("Form has been submitted.");
+        formReset();
+        
+    }
+});
+
+
 /**
  * Reusable utility functions 
  * - isRequired: checks for empty inputs 
@@ -34,7 +68,7 @@ const isPasswordSecure = (password) => {
 
 
 /**
- * Function to display error messages for incorrect inputs
+ * Display error messages for incorrect inputs
  * @param {String} input - if textbox inputs are empty or invalid 
  * @param {*} message - red error message beneath textboxes for incorrect inputs
  */
@@ -55,7 +89,7 @@ const showError = (input, message) => {
 }
 
 /**
- * Function to display for correct inputs 
+ * Display for correct inputs 
  * @param {String} input - if input into textboxes are correct, then textbox will turn green 
  */
 const showSuccess = (input) => {
@@ -72,7 +106,15 @@ const showSuccess = (input) => {
 }
 
 /**
- * Function to check that username textbox: 
+ * Reset input boxes from success color to original 
+ */
+const removeSuccess = (input) => {
+    const formField = input.parentElement;
+    formField.classList.remove('success');
+}
+
+/**
+ * Check that username textbox: 
  * - is not empty,
  * - and has the correct amount of characters 
  * @returns - true if username is filled with the correct character length 
@@ -97,7 +139,7 @@ const checkUsername = () => {
 }
 
 /**
- * Function to check email textbox: 
+ * Check email textbox: 
  * - is not empty, 
  * - is a valid email
  * @returns - true if email is filled in the correct format 
@@ -121,7 +163,7 @@ const checkEmail = () => {
 }
 
 /**
- * Function to check password textbox: 
+ * Check password textbox: 
  * - is not empty, 
  * - is a valid password 
  * @returns - true if password is filled in the correct format 
@@ -145,7 +187,7 @@ const checkPassword = () => {
 }
 
 /**
- * Function to confirm password textbox:
+ * Confirm password textbox:
  * - is not empty 
  * - is the same input as password 
  * @returns - true if confirm password is the same as password 
@@ -169,26 +211,9 @@ const checkConfirmPassword = () => {
 }
 
 /**
- * Check if all inputs into form are valid 
+ * Reset form after successful submit 
  */
-form.addEventListener('submit', function(e) {
-    // prevent the form from submitting 
-    e.preventDefault();
-
-    // validate forms 
-    // call each individual function to validate username, email, password, and 
-    // confirm password fields 
-    let isUsernameValid = checkUsername(),
-        isEmailValid = checkEmail(),
-        isPasswordValid = checkPassword(),
-        isConfirmPasswordValid = checkConfirmPassword();
-
-    let isFormValid = isUsernameValid &&
-        isEmailValid &&
-        isPasswordValid &&
-        isConfirmPasswordValid;
-
-    if(isFormValid){
-        console.log("Form has been submitted.");
-    }
-});
+function formReset(){
+    const form = document.getElementById('signup');
+    form.reset();
+}
