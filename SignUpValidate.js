@@ -121,7 +121,7 @@ const removeSuccess = (input) => {
  */
 const checkUsername = () => {
     let valid = false;
-    const min = 3, max = 25;
+    const min = 2, max = 25;
     // trim removes whitespace from both ends of a string 
     // and returns a new string, without modifying the original string 
     const username = usernameE1.value.trim();
