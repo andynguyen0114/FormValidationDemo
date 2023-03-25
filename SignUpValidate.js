@@ -176,7 +176,7 @@ const checkPassword = () => {
     if(!isRequired(password)){
         showError(passwordE1,'Password cannot be blank');
     }else if(!isPasswordSecure(password)){
-        showError(passwordE1,'Password must contain at least 8 characters that include at 1 lowercase character, 1 uppercase character, 1 number, and 1 special character.');
+        showError(passwordE1,'Password must contain at least 8 characters that include 1 lowercase character, 1 uppercase character, 1 number, and 1 special character.');
     }else{
         showSuccess(passwordE1);
         valid = true;
@@ -199,9 +199,9 @@ const checkConfirmPassword = () => {
     const password = passwordE1.value.trim();
 
     if(!isRequired(confirm)){
-        showError(confirmPasswordE1,'Please enter the password again');
+        showError(confirmPasswordE1,'Please enter the password again.');
     }else if(password != confirm){
-        showError(confirmPasswordE1,'Confirm password does not match');
+        showError(confirmPasswordE1,'Confirm password does not match.');
     }else{
         showSuccess(confirmPasswordE1);
         valid = true;
